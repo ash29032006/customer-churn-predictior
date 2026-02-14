@@ -8,8 +8,8 @@ This project implements a machine learning solution to predict customer churn (c
 - **Addressed Overfitting:** Reduced the gap between training and testing accuracy from **~19%** to **~7%**, creating a robust, generalizable model.
 - **Handled Imbalanced Data:** Implemented advanced techniques to ensure the model doesn't just bias towards the majority "Stay" class.
 
-## Techniques Implemented
-This project successfully implements all the advanced strategies required for a robust machine learning pipeline:
+## Techniques Implemented 
+`This project successfully implements all the advanced strategies required for a robust machine learning pipeline`:
 
 ### 1. Model Selection
 - **Implementation:** Switched from `RandomForestClassifier` to `XGBoostClassifier`.
@@ -38,11 +38,11 @@ This project successfully implements all the advanced strategies required for a 
 - **Reason:** Downsampling reduced accuracy (74%) by discarding 2,600 valid samples. Weighting (giving Churners a 2.77x importance score) allowed us to use **100% of the data** while still achieving high Recall (75%) and higher Accuracy (76%).
 
 ## Files in Repository
-- `churn_prediction_xgboost.py`: The main script. Loads data, trains model, tunes hyperparameters, evaluates performance, and saves the model.
+- `churn_prediction_xgboost.py`: The main script. Contains everything.
 - `WA_Fn-UseC_-Telco-Customer-Churn.csv`: The dataset.
 - `customer_churn_model_xgboost.pkl`: The saved, trained model (ready for deployment).
 - `encoders.pkl`: Saved encoding rules (required to process new data).
-- `churn_env/`: (Directory) Local Python virtual environment containing dependencies.
+- `churn_env/`:  Local Python virtual environment
 
 ## How to Run
 
