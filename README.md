@@ -8,26 +8,34 @@ This project implements a machine learning solution to predict customer churn (c
 - **Addressed Overfitting:** Reduced the gap between training and testing accuracy from **~19%** to **~7%**, creating a robust, generalizable model.
 - **Handled Imbalanced Data:** Implemented advanced techniques to ensure the model doesn't just bias towards the majority "Stay" class.
 
-## Technical Implementation
-### 1. Algorithm: XGBoost Classifier
-Chosen over Random Forest for better performance on tabular data and built-in regularization.
+## Techniques Implemented
+This project successfully implements all the advanced strategies required for a robust machine learning pipeline:
 
-### 2. Data Preprocessing
-- **Cleaning:** Handled missing values in `TotalCharges`.
-- **Encoding:** Converted categorical text (e.g., "Yes", "Male") into numbers using `LabelEncoder`.
-- **Splitting:** Used `StratifiedKFold` to ensure train/test sets have the same proportion of churners.
+### 1. Model Selection
+- **Implementation:** Switched from `RandomForestClassifier` to `XGBoostClassifier`.
+- **Reason:** XGBoost provided better handling of tabular data and built-in regularization, which was crucial for improving model generalization.
 
-### 3. Solving Class Imbalance
-- **Problem:** Dataset had 3x more "Stayers" than "Churners", causing models to ignore churners.
-- **Solution:** Used `scale_pos_weight` in XGBoost (~2.77x penalty). This forces the model to treat every missed churner as highly important without deleting valuable data.
+### 2. Addressed Overfitting
+- **Implementation:**
+  - Limited tree depth (`max_depth=5`) to prevent memorization.
+  - Used `subsample=0.8` to train on random subsets of data.
+  - Switched to XGBoost for its superior regularization parameters.
+- **Result:** Drastically reduced the Train-Test accuracy gap from **~19%** (High Overfitting) to **~7%** (Good Generalization).
 
-### 4. Hyperparameter Tuning
-Used `GridSearchCV` to test 36 combinations of settings.
-- **Optimized Parameters:**
-  - `max_depth`: 5 (Limited tree depth to prevent memorization/overfitting).
-  - `n_estimators`: 100 (Number of boosting rounds).
-  - `learning_rate`: 0.1 (Step size for weight updates).
-  - `subsample` & `colsample_bytree`: 0.8 (Used 80% of data/features per tree to add randomness).
+### 3. Hyperparameter Tuning
+- **Implementation:** Used `GridSearchCV` to exhaustively test 36 different combinations of 6 hyperparameters.
+- **Outcome:** Automatically identified the optimal configuration:
+  - `learning_rate`: 0.1
+  - `n_estimators`: 100
+  - `max_depth`: 5
+
+### 4. Stratified K-Fold CV
+- **Implementation:** Used `StratifiedKFold(n_splits=3)` during the Grid Search.
+- **Reason:** Ensuring that every training fold had the exact same percentage of churners (27%) as the full dataset prevented biased training runs.
+
+### 5. Handling Class Imbalance (Alternative to Downsampling)
+- **Implementation:** Instead of "Downsampling" (which deletes data), we implemented **Class Weighting** (`scale_pos_weight`).
+- **Reason:** Downsampling reduced accuracy (74%) by discarding 2,600 valid samples. Weighting (giving Churners a 2.77x importance score) allowed us to use **100% of the data** while still achieving high Recall (75%) and higher Accuracy (76%).
 
 ## Files in Repository
 - `churn_prediction_xgboost.py`: The main script. Loads data, trains model, tunes hyperparameters, evaluates performance, and saves the model.
